@@ -1,4 +1,4 @@
-import { IBlockChainService } from '../types';
+import { IEthereumProvider } from '../types';
 import Web3 from 'web3';
 import {AbiItem} from 'web3-utils';
 import { injectable } from 'inversify';
@@ -29,7 +29,7 @@ const usdtAbiJson: AbiItem[] = [
 const usdtContract = new web3.eth.Contract(usdtAbiJson, usdtContractAddress);
 
 @injectable()
-export class BlockChainService implements IBlockChainService {
+export class EthereumProvider implements IEthereumProvider {
     async getEthBalance(wallet: string): Promise<string> {
         const value = await web3.eth.getBalance(wallet);
         return Web3.utils.fromWei(value);

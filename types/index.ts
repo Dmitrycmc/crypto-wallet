@@ -1,7 +1,7 @@
-export * from './i-blockchain-service';
+export * from './i-ethereum-provider';
 
 const Types = {
-    IBlockChainService: Symbol.for("IBlockChainService"),
+    IEthereumProvider: Symbol.for("IEthereumProvider"),
     DataSource: Symbol("DataSource"),
     WalletRepository: Symbol("WalletRepository"),
 };

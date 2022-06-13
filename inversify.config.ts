@@ -1,15 +1,15 @@
 import { Container } from "inversify";
 import { Types } from "./types";
-import { IBlockChainService } from "./types";
-import { BlockChainService } from "./services/blockchain-service";
+import { IEthereumProvider } from "./types";
+import { EthereumProvider } from "./providers/ethereum-provider";
 import { DataSource, Repository } from "typeorm";
 import { Wallet } from "./entities/wallet";
-import { getPostresConnection } from "./postgres/postgres-connection";
+import { getPostresDataSource } from "./providers/get-postgres-data-source";
 
 const myContainer = new Container();
-myContainer.bind<IBlockChainService>(Types.IBlockChainService).to(BlockChainService).inSingletonScope();
+myContainer.bind<IEthereumProvider>(Types.IEthereumProvider).to(EthereumProvider).inSingletonScope();
 
-myContainer.bind<DataSource>(Types.DataSource).toDynamicValue(getPostresConnection).inSingletonScope();
+myContainer.bind<DataSource>(Types.DataSource).toDynamicValue(getPostresDataSource).inSingletonScope();
 
 myContainer.bind<Repository<Wallet>>(Types.WalletRepository).toDynamicValue(() => 
     myContainer.get<DataSource>(Types.DataSource).getRepository(Wallet)

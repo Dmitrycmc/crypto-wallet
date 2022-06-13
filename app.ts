@@ -6,7 +6,7 @@ import * as http from 'http';
 
 import { myContainer } from './inversify.config';
 import { Types } from './types';
-import { IBlockChainService } from './types';
+import { IEthereumProvider } from './types';
 
 import { DataSource } from "typeorm"
 import { Wallet } from "./entities/wallet"
@@ -15,7 +15,7 @@ const appDataSource = myContainer.get<DataSource>(Types.DataSource);
 
 appDataSource.initialize()
     .then(() => {
-        const blockChainService = myContainer.get<IBlockChainService>(Types.IBlockChainService);
+        const blockChainService = myContainer.get<IEthereumProvider>(Types.IEthereumProvider);
 
         const walletRepository = appDataSource.getRepository(Wallet);
         walletRepository.find().then(console.log);
