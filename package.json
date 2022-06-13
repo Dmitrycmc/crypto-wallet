@@ -1,5 +1,7 @@
 {
   "scripts": {
+    "posgres:up": "docker-compose up -d",
+    "posgres:down": "docker-compose down",
     "dev": "nodemon --config .nodemonrc.json",
     "lint:fix": "eslint . --fix"
   },
@@ -9,11 +11,14 @@
     "dotenv": "^16.0.0",
     "express": "~4.16.1",
     "inversify": "^6.0.1",
+    "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.7.0",
+    "typeorm": "^0.3.6",
     "web3": "^1.7.3"
   },
   "devDependencies": {
+    "@types/node": "^17.0.42",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "eslint": "^8.13.0"

@@ -1,0 +1,13 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    env_file:
+      - database.env # configure postgres
+    volumes: 
+      - db1:/var/lib/postgresql/data
+volumes:
+  db1:

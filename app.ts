@@ -8,23 +8,38 @@ import { myContainer } from './inversify.config';
 import { Types } from './types';
 import { IBlockChainService } from './types';
 
-const blockChainService = myContainer.get<IBlockChainService>(Types.IBlockChainService);
+import { DataSource } from "typeorm"
+import { Wallet } from "./entities/wallet"
+ 
+const appDataSource = myContainer.get<DataSource>(Types.DataSource);
 
-const app = express();
-const server = http.createServer(app);
+appDataSource.initialize()
+    .then(() => {
+        const blockChainService = myContainer.get<IBlockChainService>(Types.IBlockChainService);
 
-app.use(bodyParser.json());
+        const walletRepository = appDataSource.getRepository(Wallet);
+        walletRepository.find().then(console.log);
 
-app.get('/get-eth-balance/:wallet', async (req, res) => {
-    res.send(await blockChainService.getEthBalance(req.params.wallet));
-});
 
-app.get('/get-usdt-balance/:wallet', async (req, res) => {
-    res.send(await blockChainService.getUsdtBalance(req.params.wallet));
-});
+        const app = express();
+        const server = http.createServer(app);
 
-const port = process.env.PORT || '3001';
+        app.use(bodyParser.json());
 
-server.listen(port, () => {
-    console.log(`listening on *:${port}`);
-});
+        app.get('/get-eth-balance/:wallet', async (req, res) => {
+            res.send(await blockChainService.getEthBalance(req.params.wallet));
+        });
+
+        app.get('/get-usdt-balance/:wallet', async (req, res) => {
+            res.send(await blockChainService.getUsdtBalance(req.params.wallet));
+        });
+
+
+
+        const port = process.env.PORT || '3001';
+
+        server.listen(port, () => {
+            console.log(`listening on *:${port}`);
+        });
+    })
+    .catch((error) => console.log(error))
