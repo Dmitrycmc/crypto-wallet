@@ -1,7 +1,9 @@
-import { inject, injectable } from "inversify";
-import { Repository } from "typeorm";
-import { Wallet, WalletWithBalance } from "../entities/wallet";
-import { IEthereumProvider, IWalletService, Types } from "../types";
+import { inject, injectable } from 'inversify';
+import { Repository } from 'typeorm';
+import { Wallet, WalletWithBalance } from '../entities/wallet';
+import { InvalidAddress } from '../errors/invalid-address';
+import { NotFoundError } from '../errors/not-found-error';
+import { IEthereumProvider, IWalletService, Types } from '../types';
 
 @injectable()
 export class WalletService implements IWalletService {
@@ -12,7 +14,12 @@ export class WalletService implements IWalletService {
         const [eth, tether] = await Promise.all([
             this._ethereumProvider.getEthBalance(wallet.address),
             this._ethereumProvider.getUsdtBalance(wallet.address)
-        ]);
+        ]).catch(err => {
+            if (err.message.includes('the capitalization checksum test failed')) {
+                throw new InvalidAddress(wallet.address);
+            }
+            throw err;
+        });
 
         const walletWithBalance = new WalletWithBalance();
         walletWithBalance.id = wallet.id;
@@ -34,11 +41,19 @@ export class WalletService implements IWalletService {
     async getWallet(id: number): Promise<WalletWithBalance> {
         const wallet = await this._walletRepository.findOneBy({id});
 
+        if (wallet === null) {
+            throw new NotFoundError(id);
+        }
+
         return this.enrichByBalance(wallet);
     }
 
     async updateWallet(id: number, address: string): Promise<WalletWithBalance> {
         const wallet = await this._walletRepository.findOneBy({id});
+
+        if (wallet === null) {
+            throw new NotFoundError(id);
+        }
 
         wallet.address = address;
         const updatedWallet = await this._walletRepository.save(wallet);

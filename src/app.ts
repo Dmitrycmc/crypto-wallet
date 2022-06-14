@@ -1,4 +1,4 @@
-import "./imports";
+import './imports';
 
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -7,7 +7,7 @@ import * as http from 'http';
 import { myContainer } from './inversify.config';
 import { IRouterWrapper, Types } from './types';
 
-import { DataSource } from "typeorm"
+import { DataSource } from 'typeorm';
  
 (async () => {
     const appDataSource = myContainer.get<DataSource>(Types.DataSource);

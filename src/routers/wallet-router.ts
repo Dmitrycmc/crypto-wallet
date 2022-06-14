@@ -1,5 +1,6 @@
 import {Router} from 'express';
 import { inject, injectable } from 'inversify';
+import { IError } from '../errors/i-error';
 import { Types, IWalletService } from '../types';
 
 @injectable()
@@ -11,25 +12,34 @@ export class WalletRouter {
     constructor() {
         this._router = Router();
 
-        this._router.post('/', async (req, res) => {
-            const wallet = await this._walletService.saveWallet(req.body.address);
-            res.send(wallet);
-        })
+        this._router.post('/', (req, res, next) => {
+            this._walletService.saveWallet(req.body.address)
+                .then(data => res.send(data))
+                .catch(err => next(err));
+        });
 
-        this._router.get('/:id', async (req, res) => {
-            const wallet = await this._walletService.getWallet(Number(req.params.id));
-            res.send(wallet);
-        })
+        this._router.get('/:id', (req, res, next) => {
+            this._walletService.getWallet(Number(req.params.id))
+                .then(data => res.send(data))
+                .catch(err => next(err));
+        });
 
-        this._router.put('/:id', async (req, res) => {
-            const wallet = await this._walletService.updateWallet(Number(req.params.id), req.body.address);
-            res.send(wallet);
-        })
+        this._router.put('/:id', (req, res, next) => {
+            this._walletService.updateWallet(Number(req.params.id), req.body.address)
+                .then(data => res.send(data))
+                .catch(err => next(err));
+        });
 
-        this._router.delete('/:id', (req, res) => {
-            this._walletService.deleteWallet(Number(req.params.id));
-            res.end();
-        })
+        this._router.delete('/:id', (req, res, next) => {
+            this._walletService.deleteWallet(Number(req.params.id))
+                .then(res.end)
+                .catch(err => next(err));
+        });
+
+        this._router.use('/', (err: IError | any, _req, res, _next) => {
+            console.error(err);
+            res.status(err.statusCode || 500).send(err.statusMessage || 'Something went wrong');
+        });
     }
 
     getRouter() {

@@ -1,14 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Wallet {
     @PrimaryGeneratedColumn()
-    id: number
+        id: number;
 
     @Column({
         length: 100,
     })
-    address: string
+        address: string;
 }
 
 export class WalletWithBalance extends Wallet {
