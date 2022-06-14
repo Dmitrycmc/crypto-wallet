@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "posgres:up": "docker-compose up -d",
-    "posgres:down": "docker-compose down",
+    "postgres:up": "docker-compose up -d",
+    "postgres:down": "docker-compose down",
     "dev": "nodemon --config .nodemonrc.json",
     "lint:fix": "eslint . --fix",
     "test": "jest",
