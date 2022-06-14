@@ -1,15 +1,10 @@
 # Crypto wallet
 REST API implementing CRUD interface for address book of crypto wallets with the ability to receive a balance in **Ethereum** and **USDT**
 
-## Local development
-1. Create `.env` and write: 
-```
-INFURA_TOKEN=<token>
-POSTGRES_USER=<username>
-POSTGRES_PASSWORD=<password>
-``` 
-2. Launch Docker and run `npm run posgres:up`;
-3. Run `nvm use && npm run dev`;
+## Deployed on
+https://crypto-wallet-eth.herokuapp.com
+
+**Withount DB! Only checking balance without saving** 
 
 ## Usage
 API supports CRUD operations with wallets:
@@ -38,6 +33,16 @@ Response for POST, GET & PUT requests:
     "tetherBalance":"1897283277"
 }
 ```
+
+## Local development
+1. Create `.env` and write: 
+```
+INFURA_TOKEN=<token>
+POSTGRES_USER=<username>
+POSTGRES_PASSWORD=<password>
+``` 
+2. Launch Docker and run `npm run posgres:up`;
+3. Run `nvm use && npm run dev`;
 
 ## Based on
 * Node.js v18.3.0;
