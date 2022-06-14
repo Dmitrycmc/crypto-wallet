@@ -10,3 +10,8 @@ export class Wallet {
     })
     address: string
 }
+
+export class WalletWithBalance extends Wallet {
+    ethBalance: string;
+    tetherBalance: string;
+}

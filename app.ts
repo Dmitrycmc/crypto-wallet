@@ -5,41 +5,26 @@ import bodyParser from 'body-parser';
 import * as http from 'http';
 
 import { myContainer } from './inversify.config';
-import { Types } from './types';
-import { IEthereumProvider } from './types';
+import { IRouterWrapper, Types } from './types';
 
 import { DataSource } from "typeorm"
-import { Wallet } from "./entities/wallet"
  
-const appDataSource = myContainer.get<DataSource>(Types.DataSource);
+(async () => {
+    const appDataSource = myContainer.get<DataSource>(Types.DataSource);
+    const walletRouter = myContainer.get<IRouterWrapper>(Types.IRouterWrapper);
 
-appDataSource.initialize()
-    .then(() => {
-        const blockChainService = myContainer.get<IEthereumProvider>(Types.IEthereumProvider);
+    await appDataSource.initialize();
 
-        const walletRepository = appDataSource.getRepository(Wallet);
-        walletRepository.find().then(console.log);
+    const app = express();
+    const server = http.createServer(app);
 
+    app.use(bodyParser.json());
 
-        const app = express();
-        const server = http.createServer(app);
+    app.use('/api/v1/wallet', walletRouter.getRouter());
 
-        app.use(bodyParser.json());
+    const port = process.env.PORT || '3001';
 
-        app.get('/get-eth-balance/:wallet', async (req, res) => {
-            res.send(await blockChainService.getEthBalance(req.params.wallet));
-        });
-
-        app.get('/get-usdt-balance/:wallet', async (req, res) => {
-            res.send(await blockChainService.getUsdtBalance(req.params.wallet));
-        });
-
-
-
-        const port = process.env.PORT || '3001';
-
-        server.listen(port, () => {
-            console.log(`listening on *:${port}`);
-        });
-    })
-    .catch((error) => console.log(error))
+    server.listen(port, () => {
+        console.log(`listening on *:${port}`);
+    });
+})();
