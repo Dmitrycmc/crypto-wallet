@@ -2,7 +2,7 @@ import { IEthereumProvider } from '../types';
 import Web3 from 'web3';
 import {AbiItem} from 'web3-utils';
 import { injectable } from 'inversify';
-import { fromUsdtWei } from '../utils/converter';
+import { fromUsdtoWei } from '../utils/converter';
 
 const web3 = new Web3(`wss://mainnet.infura.io/ws/v3/${process.env.INFURA_TOKEN}`);
 const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
@@ -42,6 +42,6 @@ export class EthereumProvider implements IEthereumProvider {
             usdtContract.methods.decimals().call()
         ]);
 
-        return fromUsdtWei(balance, decimals);
+        return fromUsdtoWei(balance, decimals);
     }
 }

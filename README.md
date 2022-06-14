@@ -46,11 +46,13 @@ POSTGRES_PASSWORD=<password>
 
 ## Based on
 * Node.js v18.3.0;
+* Typescript;
 * Express;
 * Inversify;
 * Web3;
 * PostgreSQL;
 * Typeorm;
+* Jest;
 
 ## Read more:
 * USDT contract:
