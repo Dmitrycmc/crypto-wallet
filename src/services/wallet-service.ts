@@ -15,7 +15,7 @@ export class WalletService implements IWalletService {
             this._ethereumProvider.getEthBalance(wallet.address),
             this._ethereumProvider.getUsdtBalance(wallet.address)
         ]).catch(err => {
-            if (err.message.includes('the capitalization checksum test failed')) {
+            if (err.message.includes('the capitalization checksum test failed' || err.code === 'INVALID_ARGUMENT')) {
                 throw new InvalidAddress(wallet.address);
             }
             throw err;
@@ -65,4 +65,23 @@ export class WalletService implements IWalletService {
         await this._walletRepository.delete({id});
     }
 
+    async getEthBalance(address: string): Promise<string> {
+        return await this._ethereumProvider.getEthBalance(address)
+            .catch(err => {
+                if (err.message.includes('the capitalization checksum test failed')) {
+                    throw new InvalidAddress(address);
+                }
+                throw err;
+            });
+    }
+
+    async getUsdtBalance(address: string): Promise<string> {
+        return await this._ethereumProvider.getUsdtBalance(address)
+            .catch(err => {
+                if (err.code === 'INVALID_ARGUMENT') {
+                    throw new InvalidAddress(address);
+                }
+                throw err;
+            });
+    }
 }

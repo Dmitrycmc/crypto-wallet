@@ -13,10 +13,15 @@ POSTGRES_PASSWORD=<password>
 
 ## Usage
 API supports CRUD operations with wallets:
-1. POST `http://localhost:3001/api/v1/wallet`
-2. GET `http://localhost:3001/api/v1/wallet/:id`
-3. PUT `http://localhost:3001/api/v1/wallet/:id`
-4. DELETE `http://localhost:3001/api/v1/wallet/:id`
+1. POST `/api/v1/wallet`
+2. GET `/api/v1/wallet/:id`
+3. PUT `/api/v1/wallet/:id`
+4. DELETE `/api/v1/wallet/:id`
+
+And checking balance without saving:
+
+5. GET `/api/v1/wallet/usdt/:address`
+6. GET `/api/v1/wallet/eth/:address`
 
 Body for POST & PUT requests:
 ```json

@@ -13,7 +13,11 @@ import { DataSource } from 'typeorm';
     const appDataSource = myContainer.get<DataSource>(Types.DataSource);
     const walletRouter = myContainer.get<IRouterWrapper>(Types.IRouterWrapper);
 
-    await appDataSource.initialize();
+    try {
+        await appDataSource.initialize();
+    } catch (e) {
+        console.error("Unable to connect to PostreSQL");
+    }
 
     const app = express();
     const server = http.createServer(app);
