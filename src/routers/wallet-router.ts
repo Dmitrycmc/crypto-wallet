@@ -1,10 +1,9 @@
 import {Router} from 'express';
 import { inject, injectable } from 'inversify';
-import { IError } from '../errors';
-import { Types, IWalletService } from '../types';
+import { Types, IWalletService, IRouterWrapper } from '../types';
 
 @injectable()
-export class WalletRouter {
+export class WalletRouter implements IRouterWrapper {
     @inject(Types.IWalletService) private _walletService: IWalletService;
 
     private _router: Router;
@@ -34,23 +33,6 @@ export class WalletRouter {
             this._walletService.deleteWallet(Number(req.params.id))
                 .then(() => res.end())
                 .catch(err => next(err));
-        });
-
-        this._router.get('/usdt/:address', (req, res, next) => {
-            this._walletService.getUsdtBalance(req.params.address)
-                .then(data => res.send(data))
-                .catch(err => next(err));
-        });
-
-        this._router.get('/eth/:address', (req, res, next) => {
-            this._walletService.getEthBalance(req.params.address)
-                .then(data => res.send(data))
-                .catch(err => next(err));
-        });
-
-        this._router.use('/', (err: IError | any, _req, res, _next) => {
-            console.error(err);
-            res.status(err.statusCode || 500).send(err.statusMessage || 'Something went wrong');
         });
     }
 

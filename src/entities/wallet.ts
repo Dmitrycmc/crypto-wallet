@@ -11,7 +11,18 @@ export class Wallet {
         address: string;
 }
 
-export class WalletWithBalance extends Wallet {
+export interface Balance {
     ethBalance: string;
     tetherBalance: string;
+}
+
+export class WalletWithBalance extends Wallet {
+    balance: Balance;
+
+    constructor(wallet: Wallet, balance: Balance) {
+        super();
+        this.id = wallet.id;
+        this.address = wallet.address;
+        this.balance = balance;
+    }
 }

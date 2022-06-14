@@ -5,7 +5,7 @@ REST API implementing CRUD interface for address book of crypto wallets with the
 
 
 ## Deployment
-https://crypto-wallet-eth.herokuapp.com/api/v1/wallet/usdt/0x5754284f345afc66a98fbb0a0afe71e0f007b949
+https://crypto-wallet-eth.herokuapp.com/api/v1/balance/0x5754284f345afc66a98fbb0a0afe71e0f007b949
 
 **Withount DB! Only checking balance without saving** 
 
@@ -16,11 +16,6 @@ API supports CRUD operations with wallets:
 3. PUT `/api/v1/wallet/:id`
 4. DELETE `/api/v1/wallet/:id`
 
-And checking balance without saving:
-
-5. GET `/api/v1/wallet/usdt/:address`
-6. GET `/api/v1/wallet/eth/:address`
-
 Body for POST & PUT requests:
 ```json
 {
@@ -30,12 +25,23 @@ Body for POST & PUT requests:
 Response for POST, GET & PUT requests:
 ```json
 {
-    "id":1,
-    "address":"0xf977814e90da44bfa03b6295a0616a897441acec",
-    "ethBalance":"350176.37164372055022388",
-    "tetherBalance":"1897283277"
+    "id": 2,
+    "address": "0xf977814e90da44bfa03b6295a0616a897441acec",
+    "balance": {
+        "ethBalance": "350176.369374059052253538",
+        "tetherBalance": "1897283277"
+    }
 }
 ```
+
+And checking balance without saving address to DB:
+
+5. GET `/api/v1/balance/:address`
+
+## Error statuses
+* 400: Invalid address
+* 404: Not found wallet
+* 500: DataBase unavailable or another server error
 
 ## Local development
 1. Create `.env` and write: 
@@ -44,7 +50,7 @@ INFURA_TOKEN=<token>
 POSTGRES_USER=<username>
 POSTGRES_PASSWORD=<password>
 ``` 
-2. Launch Docker and run `npm run posgres:up`;
+2. Launch Docker and run `npm run postgres:up`;
 3. Run `nvm use && npm run dev`;
 
 ## Based on

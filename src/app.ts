@@ -6,29 +6,18 @@ import * as http from 'http';
 
 import { myContainer } from './inversify.config';
 import { IRouterWrapper, Types } from './types';
-
-import { DataSource } from 'typeorm';
  
-(async () => {
-    const appDataSource = myContainer.get<DataSource>(Types.DataSource);
-    const walletRouter = myContainer.get<IRouterWrapper>(Types.IRouterWrapper);
+const apiRouter = myContainer.get<IRouterWrapper>(Types.ApiRouter);
 
-    try {
-        await appDataSource.initialize();
-    } catch (e) {
-        console.error("Unable to connect to PostreSQL");
-    }
+const app = express();
+const server = http.createServer(app);
 
-    const app = express();
-    const server = http.createServer(app);
+app.use(bodyParser.json());
 
-    app.use(bodyParser.json());
+app.use('/api/v1', apiRouter.getRouter());
 
-    app.use('/api/v1/wallet', walletRouter.getRouter());
+const port = process.env.PORT || '3001';
 
-    const port = process.env.PORT || '3001';
-
-    server.listen(port, () => {
-        console.log(`listening on *:${port}`);
-    });
-})();
+server.listen(port, () => {
+    console.log(`listening on *:${port}`);
+});
