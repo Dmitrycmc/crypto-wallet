@@ -63,6 +63,6 @@ POSTGRES_PASSWORD=<password>
 * Typeorm;
 * Jest;
 
-## Read more:
+## Read more
 * USDT contract:
 https://etherscan.io/address/0xdac17f958d2ee523a2206206994597c13d831ec7
