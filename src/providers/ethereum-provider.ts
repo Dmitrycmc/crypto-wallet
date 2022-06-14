@@ -22,7 +22,7 @@ const usdtAbiJson: AbiItem[] = [
         type: 'function',
         constant: true,
         inputs: [],
-        outputs: [{ name: '', type: 'uint8' }]
+        outputs: [{ name: 'decimals', type: 'uint8' }]
     }
 ];
 

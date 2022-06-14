@@ -1,12 +1,15 @@
 # Crypto wallet
+REST API implementing CRUD interface for address book of crypto wallets with the ability to receive a balance in **Ethereum** and **USDT**
 
 ## Local development
-
 1. Create `.env` and write: 
 ```
 INFURA_TOKEN=<token>
+POSTGRES_USER=<username>
+POSTGRES_PASSWORD=<password>
 ``` 
-2. Run `nvm use && npm run dev`;
+2. Launch Docker and run `npm run posgres:up`;
+3. Run `nvm use && npm run dev`;
 
 ## Usage
 API supports CRUD operations with wallets:
@@ -36,10 +39,9 @@ Response for POST, GET & PUT requests:
 * Express;
 * Inversify;
 * Web3;
-* PostgreSQL
+* PostgreSQL;
 * Typeorm;
 
 ## Read more:
-
 * USDT contract:
 https://etherscan.io/address/0xdac17f958d2ee523a2206206994597c13d831ec7

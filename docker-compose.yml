@@ -6,7 +6,7 @@ services:
     ports:
       - '5432:5432'
     env_file:
-      - database.env # configure postgres
+      - .env
     volumes: 
       - db1:/var/lib/postgresql/data
 volumes:
