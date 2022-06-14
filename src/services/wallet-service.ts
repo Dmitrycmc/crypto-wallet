@@ -1,13 +1,12 @@
 import { inject, injectable } from 'inversify';
 import { Repository } from 'typeorm';
-import { Wallet, WalletWithBalance } from '../entities/wallet';
-import { InvalidAddress } from '../errors/invalid-address';
-import { NotFoundError } from '../errors/not-found-error';
+import { Wallet, WalletWithBalance } from '../entities';
+import { NotFoundError, InvalidAddress } from '../errors';
 import { IEthereumProvider, IWalletService, Types } from '../types';
 
 @injectable()
 export class WalletService implements IWalletService {
-    @inject(Types.WalletRepository) private _walletRepository: Repository<Wallet>;
+    @inject(Types.WalletRepositoryProvider) private _walletRepositoryProvider: () => Promise<Repository<Wallet>>;
     @inject(Types.IEthereumProvider) private _ethereumProvider: IEthereumProvider;
 
     private async enrichByBalance(wallet: Wallet): Promise<WalletWithBalance> {
@@ -33,13 +32,13 @@ export class WalletService implements IWalletService {
     async saveWallet(address: string): Promise<WalletWithBalance> {
         const wallet = new Wallet();
         wallet.address = address;
-        const savedWallet = await this._walletRepository.save(wallet);
+        const savedWallet = await (await this._walletRepositoryProvider()).save(wallet);
 
         return this.enrichByBalance(savedWallet);
     }
 
     async getWallet(id: number): Promise<WalletWithBalance> {
-        const wallet = await this._walletRepository.findOneBy({id});
+        const wallet = await (await this._walletRepositoryProvider()).findOneBy({id});
 
         if (wallet === null) {
             throw new NotFoundError(id);
@@ -49,20 +48,20 @@ export class WalletService implements IWalletService {
     }
 
     async updateWallet(id: number, address: string): Promise<WalletWithBalance> {
-        const wallet = await this._walletRepository.findOneBy({id});
+        const wallet = await (await this._walletRepositoryProvider()).findOneBy({id});
 
         if (wallet === null) {
             throw new NotFoundError(id);
         }
 
         wallet.address = address;
-        const updatedWallet = await this._walletRepository.save(wallet);
+        const updatedWallet = await (await this._walletRepositoryProvider()).save(wallet);
 
         return this.enrichByBalance(updatedWallet);
     }
 
     async deleteWallet(id: number): Promise<void> {
-        await this._walletRepository.delete({id});
+        await (await this._walletRepositoryProvider()).delete({id});
     }
 
     async getEthBalance(address: string): Promise<string> {

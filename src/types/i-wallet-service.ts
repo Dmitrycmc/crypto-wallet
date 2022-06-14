@@ -1,4 +1,4 @@
-import { WalletWithBalance } from '../entities/wallet';
+import { WalletWithBalance } from '../entities';
 
 export interface IWalletService {
     saveWallet(address: string): Promise<WalletWithBalance>,

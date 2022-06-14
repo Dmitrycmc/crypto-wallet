@@ -7,7 +7,7 @@ const Types = {
     IWalletService: Symbol.for('IWalletService'),
     IEthereumProvider: Symbol.for('IEthereumProvider'),
     DataSource: Symbol('DataSource'),
-    WalletRepository: Symbol('WalletRepository'),
+    WalletRepositoryProvider: Symbol('WalletRepositoryProvider'),
 };
 
 export { Types };

@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import { inject, injectable } from 'inversify';
-import { IError } from '../errors/i-error';
+import { IError } from '../errors';
 import { Types, IWalletService } from '../types';
 
 @injectable()
