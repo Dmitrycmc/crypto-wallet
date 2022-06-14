@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { Wallet } from '../entities/wallet';
+import { Wallet } from '../entities';
 
 export const getPostresDataSource = (): DataSource => new DataSource({
     type: 'postgres',

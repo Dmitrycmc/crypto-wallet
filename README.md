@@ -1,8 +1,11 @@
 # Crypto wallet
 REST API implementing CRUD interface for address book of crypto wallets with the ability to receive a balance in **Ethereum** and **USDT**
 
-## Deployed on
-https://crypto-wallet-eth.herokuapp.com
+![pexels-lukas-915917](https://user-images.githubusercontent.com/38041284/173495874-afdddcaf-6fbf-49cb-b78a-0b8e44aee69a.jpg)
+
+
+## Deployment
+https://crypto-wallet-eth.herokuapp.com/api/v1/wallet/usdt/0x5754284f345afc66a98fbb0a0afe71e0f007b949
 
 **Withount DB! Only checking balance without saving** 
 
