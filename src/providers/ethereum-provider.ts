@@ -2,6 +2,7 @@ import { IEthereumProvider } from '../types';
 import Web3 from 'web3';
 import {AbiItem} from 'web3-utils';
 import { injectable } from 'inversify';
+import { fromUsdtWei } from '../utils/converter';
 
 const web3 = new Web3(`wss://mainnet.infura.io/ws/v3/${process.env.INFURA_TOKEN}`);
 const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
@@ -36,10 +37,11 @@ export class EthereumProvider implements IEthereumProvider {
     }
 
     async getUsdtBalance(wallet: string): Promise<string> {
-        const [balance, decimals] = await Promise.all<[number, number]>([
+        const [balance, decimals] = await Promise.all<[string, string]>([
             usdtContract.methods.balanceOf(wallet).call(),
             usdtContract.methods.decimals().call()
         ]);
-        return String(balance / (10 ** decimals));
+
+        return fromUsdtWei(balance, decimals);
     }
 }
